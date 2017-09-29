@@ -4,6 +4,7 @@ import android.database.Observable
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import android.databinding.ObservableList
+import android.util.Log
 import kotlin.properties.ObservableProperty
 
 /**
@@ -22,8 +23,10 @@ class ListaViewModel {
     }
 
     fun watchLista(codigo:String){
+        Log.d("MercadoFacil","watch ${ codigo}")
         listaModel.whatchLista(codigo, object : ListaModel.OnListaReadyCallback {
             override fun onListaReady(newLista: Lista) {
+                Log.d("MercadoFacil","listaReady ${newLista}")
                 lista.set(newLista)
                 produtos.addAll(newLista.produtos)
             }

@@ -1,5 +1,6 @@
 package br.com.endring.mercadofacil
 
+import android.util.Log
 import com.google.firebase.database.*
 
 
@@ -23,7 +24,7 @@ class ListaModel {
     fun whatchLista(codigo:String, callback: OnListaReadyCallback){
         //todo buscar do firebase
         var prods = mutableListOf<Produto>()
-        var lista : Lista?
+        var lista : Lista
         if(codigo=="1"){
             prods.add(Produto("açucar"))
             prods.add(Produto("toddy"))
@@ -36,20 +37,28 @@ class ListaModel {
             prods.add(Produto("pano de prato"))
             lista=Lista("2", "Coisas de casa", prods)
         }
-        callback.onListaReady(lista)
+
 
 
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("listas").child(codigo)
         myRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                lista = dataSnapshot?.getValue(Lista::class.java)
+                Log.d("MercadoFacil","ondatachange")
+                if(dataSnapshot?.getValue(Lista::class.java)!=null) {
+                    Log.d("MercadoFacil","ondatachange lista!=null")
+                    lista = dataSnapshot.getValue(Lista::class.java)
+                    callback.onListaReady(lista)
+                }
             }
 
             override fun onCancelled(error: DatabaseError?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
+
+        Log.d("MercadoFacil","ondatachange 1")
+        myRef.setValue(lista)
     }
 
     fun stopWatchingLista(codigo: String){
