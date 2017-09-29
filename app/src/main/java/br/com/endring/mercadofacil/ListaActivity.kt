@@ -23,8 +23,8 @@ class ListaActivity : AppCompatActivity() {
         binding.lista = lista
         binding.executePendingBindings()
 
-//        binding.recyclerLista.layoutManager=LinearLayoutManager(this)
-//        binding.recyclerLista.adapter=ProdutosAdapter(listasViewModel.lista.get())
+        binding.recyclerLista.layoutManager=LinearLayoutManager(this)
+        binding.recyclerLista.adapter=ProdutosAdapter(listasViewModel.produtos)
 
         listasViewModel.watchLista(lista.codigo)
 

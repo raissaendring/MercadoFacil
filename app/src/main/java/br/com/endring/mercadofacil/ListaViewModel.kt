@@ -15,6 +15,7 @@ class ListaViewModel {
 
     val listas = ObservableArrayList<Lista>()
     val lista = ObservableField<Lista>()
+    val produtos = ObservableArrayList<Produto>()
 
     fun getListas(){
         listas.addAll(listaModel.getListas())
@@ -24,6 +25,7 @@ class ListaViewModel {
         listaModel.whatchLista(codigo, object : ListaModel.OnListaReadyCallback {
             override fun onListaReady(newLista: Lista) {
                 lista.set(newLista)
+                produtos.addAll(newLista.produtos)
             }
 
         })

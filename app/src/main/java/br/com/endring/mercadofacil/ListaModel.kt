@@ -1,5 +1,8 @@
 package br.com.endring.mercadofacil
 
+import com.google.firebase.database.*
+
+
 /**
  * Created by primelan on 9/28/17.
  */
@@ -20,7 +23,7 @@ class ListaModel {
     fun whatchLista(codigo:String, callback: OnListaReadyCallback){
         //todo buscar do firebase
         var prods = mutableListOf<Produto>()
-        var lista : Lista
+        var lista : Lista?
         if(codigo=="1"){
             prods.add(Produto("açucar"))
             prods.add(Produto("toddy"))
@@ -35,6 +38,21 @@ class ListaModel {
         }
         callback.onListaReady(lista)
 
+
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("listas").child(codigo)
+        myRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                lista = dataSnapshot?.getValue(Lista::class.java)
+            }
+
+            override fun onCancelled(error: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+    }
+
+    fun stopWatchingLista(codigo: String){
 
     }
 

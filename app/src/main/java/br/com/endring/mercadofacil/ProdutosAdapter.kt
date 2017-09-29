@@ -9,21 +9,22 @@ import br.com.endring.mercadofacil.databinding.ItemProdutoBinding
 /**
  * Created by raissa on 28/09/17.
  */
-class ProdutosAdapter(var lista: Lista) : RecyclerView.Adapter<ProdutosAdapter.ProdutosViewHolder>(){
+class ProdutosAdapter(var produtos: List<Produto>) : RecyclerView.Adapter<ProdutosAdapter.ProdutosViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ProdutosViewHolder {
         return ProdutosViewHolder(ItemProdutoBinding.inflate(LayoutInflater.from(parent?.context),parent,false))
     }
 
-    override fun getItemCount(): Int = lista.produtos.size
+//    override fun getItemCount(): Int = if(lista?.produtos?.size != null)lista?.produtos?.size as Int else 0
+override fun getItemCount(): Int = produtos.size
 
     override fun onBindViewHolder(holder: ProdutosViewHolder?, position: Int) {
-        holder?.bind(lista.produtos.get(position))
+        holder?.bind(produtos.get(position))
     }
 
 
     class ProdutosViewHolder(var binding: ItemProdutoBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(produto: Produto){
+        fun bind(produto: Produto?){
             binding.produto=produto
             binding.executePendingBindings()
         }
