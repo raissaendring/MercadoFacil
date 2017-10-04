@@ -7,7 +7,11 @@ import com.google.firebase.database.*
 /**
  * Created by primelan on 9/28/17.
  */
-class ListaModel {
+class ListaModel() {
+
+    var refLista : DatabaseReference? = null
+    var eventListener : ValueEventListener? = null
+
 
     fun getListas(): List<Lista>{
         var listas : MutableList<Lista>
@@ -41,8 +45,8 @@ class ListaModel {
 
 
         val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("listas").child(codigo)
-        myRef.addValueEventListener(object : ValueEventListener{
+        refLista = database.getReference("listas").child(codigo)
+        eventListener = object : ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 Log.d("MercadoFacil","ondatachange")
                 if(dataSnapshot?.getValue(Lista::class.java)!=null) {
@@ -53,16 +57,26 @@ class ListaModel {
             }
 
             override fun onCancelled(error: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-        })
+        }
+        refLista?.addValueEventListener(eventListener)
 
         Log.d("MercadoFacil","ondatachange 1")
-        myRef.setValue(lista)
+        refLista?.setValue(lista)
     }
 
     fun stopWatchingLista(codigo: String){
+        refLista?.removeEventListener(eventListener)
+    }
 
+    fun addProduto(nomeProduto: String, quantProduto: String=""){
+        refLista?.child("produtos")?.push()?.setValue(Produto(nomeProduto, quantProduto))
+    }
+
+    fun addLista(nomeLista: String) : String{
+        val ref = FirebaseDatabase.getInstance().getReference("listas").push()
+        ref.setValue(Lista(nome = nomeLista))
+        return ref.key
     }
 
     interface OnListaReadyCallback{

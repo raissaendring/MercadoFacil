@@ -27,10 +27,14 @@ class ListaViewModel {
         listaModel.whatchLista(codigo, object : ListaModel.OnListaReadyCallback {
             override fun onListaReady(newLista: Lista) {
                 Log.d("MercadoFacil","listaReady ${newLista}")
-                lista.set(newLista)
+                produtos.clear()
                 produtos.addAll(newLista.produtos)
             }
 
         })
+    }
+
+    fun addProduto(nomeProduto: String, quantidade: String=""){
+        listaModel.addProduto(nomeProduto, quantidade)
     }
 }

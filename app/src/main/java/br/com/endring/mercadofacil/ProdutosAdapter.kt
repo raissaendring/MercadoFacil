@@ -25,7 +25,8 @@ class ProdutosAdapter(var produtos: List<Produto>) : RecyclerView.Adapter<Produt
     class ProdutosViewHolder(var binding: ItemProdutoBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(produto: Produto?) {
-            binding.produto = produto
+//            binding.produto = produto
+            binding.setVariable(BR.produto, produto)
             binding.executePendingBindings()
         }
 
